@@ -195,7 +195,7 @@ gulp.task('clean', function () {
 });
 
 //cria html compilado e comprime arquivos
-gulp.task('html', ['inject-css', 'inject-js'], function () {
+gulp.task('html', ['initdep'], function () {
     var jsFilter = $.filter('app/scripts/**/*.js');
     var cssFilter = $.filter('app/styles/**/*.css');
 
