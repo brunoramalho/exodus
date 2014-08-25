@@ -39,6 +39,23 @@ gulp.task('scripts', function () {
     return combined;
 });
 
+//Inclui os HTML de componentes dentro de templates e copia o resultado na raiz
+gulp.task('include-html', function() {
+    var combined = Combine(
+        gulp.src(['app/templates/*.html']),
+        fileinclude({
+            prefix: '@@',
+            basepath: '@file'
+        }),
+        gulp.dest('app')
+    );
+    combined.on('error', function(err) {
+        console.warn(err.message);
+    });
+
+    return combined;
+});
+
 //Injeta arquivos CSS
 gulp.task('inject-css', ['include-html','styles'], function () {
     var sources = gulp.src(['app/styles/**/*.css'], {read: false});
@@ -101,7 +118,6 @@ gulp.task('initdep', ['kickoff'], function () {
         gulp.src(['app/*.html','!app/templates/*.html']),
         wiredep({
             directory: 'app/bower_components'
-            //exclude: [ /bootstrap/ ]
         }),
         gulp.dest('app')
     );
@@ -113,22 +129,6 @@ gulp.task('initdep', ['kickoff'], function () {
 });
 
 
-//Inclui os HTML de componentes dentro de templates e copia o resultado na raiz
-gulp.task('include-html', function() {
-    var combined = Combine(
-        gulp.src(['app/templates/*.html']),
-        fileinclude({
-            prefix: '@@',
-            basepath: '@file'
-        }),
-        gulp.dest('app')
-    );
-    combined.on('error', function(err) {
-        console.warn(err.message);
-    });
-
-    return combined;
-});
 
 /////////////////
 //BUILD TASKS
@@ -312,7 +312,7 @@ gulp.task('watch', ['connect', 'serve'], function () {
 
     gulp.watch('app/templates/*.html', ['initdep']);
     gulp.watch('app/components/*.html', ['initdep']);
-    gulp.watch('app/styles/less/**/*.less', ['inject-css']);
-    gulp.watch('app/scripts/**/*.js', ['inject-js']);
+    gulp.watch('app/styles/less/**/*.less', ['initdep']);
+    gulp.watch('app/scripts/**/*.js', ['initdep']);
     gulp.watch('bower.json', ['wiredep']);
 });
