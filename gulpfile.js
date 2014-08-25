@@ -156,8 +156,7 @@ gulp.task('images', function () {
 //Copia arquivos tipograficos
 gulp.task('fonts', function () {
     var combined = Combine(
-        $.bowerFiles(),
-        $.filter('app/fonts/**/*.{eot,svg,ttf,woff}'),
+        gulp.src(['app/fonts/**/*.{eot,svg,otf,ttf,woff}','app/bower_components/fonts/**/*.{eot,svg,otf,ttf,woff}']),
         $.flatten(),
         gulp.dest('dist/fonts'),
         $.size()
