@@ -6,6 +6,7 @@ var fileinclude = require('gulp-file-include');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
+var mainBowerFiles = require('main-bower-files');
 
 //Compila arquivos LESS
 var lessPath = 'app/styles/less/**/';
@@ -156,7 +157,8 @@ gulp.task('images', function () {
 //Copia arquivos tipograficos
 gulp.task('fonts', function () {
     var combined = Combine(
-        gulp.src(['app/fonts/**/*.{eot,svg,otf,ttf,woff}','app/bower_components/fonts/**/*.{eot,svg,otf,ttf,woff}']),
+        gulp.src(mainBowerFiles()),
+        $.filter('**/*.{eot,svg,ttf,woff}'),
         $.flatten(),
         gulp.dest('dist/fonts'),
         $.size()
