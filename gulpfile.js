@@ -155,13 +155,25 @@ gulp.task('images', function () {
 });
 
 //Copia arquivos tipograficos
-gulp.task('fonts', function () {
+gulp.task('fonts', ['fonts-local'], function () {
     var combined = Combine(
         gulp.src(mainBowerFiles()),
         $.filter('**/*.{eot,svg,ttf,woff}'),
         $.flatten(),
         gulp.dest('dist/fonts'),
         $.size()
+    );
+    combined.on('error', function(err) {
+        console.warn(err.message);
+    });
+
+    return combined;
+});
+
+gulp.task('fonts-local', function () {
+    var combined = Combine(
+        gulp.src('app/fonts/**/*.{eot,svg,ttf,woff}'),
+        gulp.dest('dist/fonts')
     );
     combined.on('error', function(err) {
         console.warn(err.message);
